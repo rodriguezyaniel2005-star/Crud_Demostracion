@@ -40,10 +40,12 @@ public class DiscoDAO {
     }
     
     public List<Disco> readAll() {
+        System.out.println("[DEBUG] Reading all products, collection count: " + collection.countDocuments());
         List<Disco> discos = new ArrayList<>();
         for (Document doc : collection.find()) {
             discos.add(documentToDisco(doc));
         }
+        System.out.println("[DEBUG] Loaded " + discos.size() + " products");
         return discos;
     }
     

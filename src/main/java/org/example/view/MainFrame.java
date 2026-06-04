@@ -1,7 +1,7 @@
 package org.example.view;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
 
 public class MainFrame extends JFrame {
     private JTabbedPane tabbedPane;
@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
     private SalePanel salePanel;
     
     public MainFrame() {
-        setTitle("Music Shop Management System");
+        setTitle("Shop Management");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);
         setLocationRelativeTo(null);

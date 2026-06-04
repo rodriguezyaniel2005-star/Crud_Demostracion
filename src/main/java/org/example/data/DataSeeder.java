@@ -10,6 +10,7 @@ import org.bson.Document;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.bson.types.ObjectId;
 
 /**
  * DataSeeder: Automatically initializes MongoDB collections and inserts test data.
@@ -23,16 +24,25 @@ public class DataSeeder {
             MongoCollection<Document> categoriasCollection = database.getCollection("categorias");
             MongoCollection<Document> productosCollection = database.getCollection("productos");
             
-            if (categoriasCollection.countDocuments() == 0) {
-                System.out.println("Database is empty. Seeding initial data...");
-                seedCategories(database);
-                seedProducts(database);
-                seedBuyers(database);
-                seedSales(database);
-                System.out.println("Database seeding completed successfully!");
-            } else {
-                System.out.println("Database already contains data. Skipping seeding.");
-            }
+        if (categoriasCollection.countDocuments() == 0) {
+            System.out.println("Database is empty. Seeding initial data...");
+            seedCategories(database);
+            seedProducts(database);
+            seedBuyers(database);
+            seedSales(database);
+            System.out.println("Database seeding completed successfully!");
+        } else {
+            System.out.println("Database already contains data. Dropping existing collections and reseeding.");
+            // Drop existing collections
+            categoriasCollection.drop();
+            productosCollection.drop();
+            // Reseed fresh data
+            seedCategories(database);
+            seedProducts(database);
+            seedBuyers(database);
+            seedSales(database);
+            System.out.println("Database reseeded successfully!");
+        }
         } catch (Exception e) {
             System.err.println("Error during database seeding: " + e.getMessage());
             e.printStackTrace();
@@ -97,7 +107,7 @@ public class DataSeeder {
         // Define products per category with specific attributes
         for (Document category : categories) {
             String categoryName = category.getString("nombre");
-            String categoryId = category.getObjectId("_id").toString();
+            ObjectId categoryId = category.getObjectId("_id");
 
             switch (categoryName) {
                 case "Informática":
@@ -169,7 +179,7 @@ public class DataSeeder {
 
     // Product insertion methods for each category
 
-    private static void addProductsInformatica(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsInformatica(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Laptop Dell XPS 13", "Laptop ultradelgada de alto rendimiento", "1299.99", "15", "Dell"},
                 {"Monitor LG UltraWide", "Monitor 34 pulgadas ultrawide 3440x1440", "599.99", "8", "LG"},
@@ -181,7 +191,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsSmartphones(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsSmartphones(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Samsung Galaxy S23", "Pantalla 6.1 pulgadas AMOLED", "899.99", "20", "Samsung"},
                 {"iPhone 15 Pro", "Pantalla 6.1 pulgadas Super Retina", "999.99", "15", "Apple"},
@@ -193,7 +203,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsTelevisores(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsTelevisores(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"LG OLED55C3PUA", "Pantalla 55 pulgadas 4K OLED", "2499.99", "5", "LG"},
                 {"Sony BRAVIA 65XR80", "Pantalla 65 pulgadas 4K Mini-LED", "2299.99", "7", "Sony"},
@@ -205,7 +215,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsElectrodomesticos(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsElectrodomesticos(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Refrigeradora LG French Door", "Refrigeradora de 25 pies cúbicos", "2499.99", "4", "LG"},
                 {"Lavadora Samsung FlexWash", "Lavadora con 2 tambores", "1899.99", "6", "Samsung"},
@@ -217,7 +227,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsVideojuegos(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsVideojuegos(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Baldur's Gate 3", "RPG de fantasía épico", "59.99", "30", "Larian Studios"},
                 {"The Legend of Zelda: Tears of the Kingdom", "Aventura open-world", "69.99", "25", "Nintendo"},
@@ -229,7 +239,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsConsolas(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsConsolas(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"PlayStation 5", "Consola Sony de nueva generación", "499.99", "10", "Sony"},
                 {"Xbox Series X", "Consola Microsoft de última generación", "499.99", "12", "Microsoft"},
@@ -241,7 +251,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsLibros(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsLibros(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Java Effective", "Guía para escribir Java profesional", "39.99", "50", "Pearson"},
                 {"Clean Code", "Código limpio y buenas prácticas", "35.99", "45", "Prentice Hall"},
@@ -253,7 +263,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsDeportes(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsDeportes(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Bicicleta Mountain Bike Trek", "Bicicleta con suspensión 21 velocidades", "599.99", "10", "Trek"},
                 {"Zapatillas Nike Running", "Zapatillas para correr ultraligeras", "129.99", "40", "Nike"},
@@ -265,7 +275,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsJardineria(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsJardineria(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Cortadora de Césped Eléctrica", "Cortadora sin cable 40V", "399.99", "12", "Greenworks"},
                 {"Bordeadora de Hilo", "Bordeadora inalámbrica 20V", "149.99", "20", "Black+Decker"},
@@ -277,7 +287,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsHerramientas(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsHerramientas(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Taladro-Destornillador DeWalt", "Taladro-destornillador 20V sin cable", "149.99", "25", "DeWalt"},
                 {"Lijadora Orbital Makita", "Lijadora orbital de 5 pulgadas", "99.99", "20", "Makita"},
@@ -289,7 +299,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsAutomocion(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsAutomocion(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Llantas Michelin LTX 265/65R17", "Llantas all-terrain premium", "189.99", "24", "Michelin"},
                 {"Batería Optima 800A", "Batería de carro 800A", "189.99", "16", "Optima"},
@@ -301,7 +311,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsOficina(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsOficina(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Escritorio Gamer RGB", "Escritorio gaming con LED 150cm", "349.99", "10", "Green Soul"},
                 {"Silla Ergonómica HM", "Silla ergonómica reclinable", "499.99", "8", "Herman Miller"},
@@ -313,7 +323,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsHogar(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsHogar(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Espejo de Pared Decorativo", "Espejo redondo 80cm diámetro", "99.99", "25", "Home Decor"},
                 {"Lámpara de Techo Colgante", "Lámpara moderna minimalista", "79.99", "30", "Ikea"},
@@ -325,7 +335,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsCocina(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsCocina(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Juego Ollas 12 piezas", "Juego de ollas antiadherente", "149.99", "20", "T-fal"},
                 {"Cuchillo Chef 8 pulgadas", "Cuchillo chef alemán de acero", "89.99", "40", "Wüsthof"},
@@ -337,7 +347,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsMascotas(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsMascotas(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Alimento Perro Premium 15kg", "Alimento balanceado premium", "49.99", "50", "Purina Pro"},
                 {"Cama Perro Memory Foam", "Cama ortopédica de memory foam", "89.99", "20", "PetFusion"},
@@ -349,7 +359,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsJuguetes(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsJuguetes(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"LEGO Harry Potter 4-16", "Set LEGO Castillo Hogwarts", "399.99", "25", "LEGO"},
                 {"Drone DJI Mini 3 Pro", "Dron 4K con estabilizador", "349.99", "12", "DJI"},
@@ -361,7 +371,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsModa(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsModa(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Jeans Levi's 501", "Jeans clásico azul oscuro", "69.99", "100", "Levi's"},
                 {"Zapatos Nike Air Max 90", "Zapatos de running Air Max", "129.99", "80", "Nike"},
@@ -373,7 +383,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsBelleza(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsBelleza(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Crema Facial Retinol Neutrogena", "Crema anti-envejecimiento", "24.99", "80", "Neutrogena"},
                 {"Perfume Dior Miss Dior", "Perfume 100ml", "99.99", "35", "Dior"},
@@ -385,7 +395,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsMusica(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsMusica(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Guitarra Acústica Yamaha FG800", "Guitarra acústica 6 cuerdas", "199.99", "20", "Yamaha"},
                 {"Teclado Sintetizador Casio WK-240", "Teclado 76 teclas", "299.99", "15", "Casio"},
@@ -397,7 +407,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductsCine(List<Document> products, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductsCine(List<Document> products, ObjectId categoryId, String categoryName, LocalDateTime now) {
         String[][] data = {
                 {"Blu-ray Avatar El Camino del Agua", "Película Blu-ray 4K", "24.99", "50", "20th Century"},
                 {"DVD Set Breaking Bad Temporada 1", "Serie TV completa 4 DVD", "39.99", "40", "Sony Pictures"},
@@ -409,7 +419,7 @@ public class DataSeeder {
         addProductBatch(products, data, categoryId, categoryName, now);
     }
 
-    private static void addProductBatch(List<Document> products, String[][] data, String categoryId, String categoryName, LocalDateTime now) {
+    private static void addProductBatch(List<Document> products, String[][] data, ObjectId categoryId, String categoryName, LocalDateTime now) {
         for (String[] item : data) {
             Document doc = new Document()
                     .append("nombre", item[0])
@@ -526,6 +536,7 @@ public class DataSeeder {
                 Document item = new Document()
                         .append("productoId", product.getObjectId("_id"))
                         .append("productoNombre", product.getString("nombre"))
+                        .append("categoriaNombre", product.getString("categoriaNombre"))
                         .append("cantidad", quantity)
                         .append("precioUnitario", product.getDouble("precio"))
                         .append("subtotal", subtotal);

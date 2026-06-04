@@ -109,7 +109,7 @@ public class ProductPanel extends JPanel implements EntityChangeListener {
     private JPanel createTablePanel() {
         JPanel panel = new JPanel(new BorderLayout());
         tableModel = new DefaultTableModel(
-            new String[]{"ID", "Nombre", "Descripción", "Precio", "Stock", "Marca"}, 0);
+            new String[]{"ID", "Nombre", "Descripción", "Precio", "Stock", "Marca", "Categoría"}, 0);
         productTable = new JTable(tableModel);
         productTable.getSelectionModel().addListSelectionListener(e -> loadProductData());
         JScrollPane scrollPane = new JScrollPane(productTable);
@@ -198,7 +198,8 @@ public class ProductPanel extends JPanel implements EntityChangeListener {
                     disco.getDescripcion(),
                     disco.getPrecio(),
                     disco.getStock(),
-                    disco.getMarca()
+                    disco.getMarca(),
+                    disco.getCategoriaNombre(),
                 });
             }
         }
@@ -225,8 +226,7 @@ public class ProductPanel extends JPanel implements EntityChangeListener {
                 precioField.setText(String.valueOf(disco.getPrecio()));
                 stockField.setText(String.valueOf(disco.getStock()));
                 marcaField.setText(disco.getMarca());
-                
-                // Set categoria combo
+                // Set categoria combo based on categoriaId
                 for (int i = 0; i < categoriaCombo.getItemCount(); i++) {
                     Categoria cat = categoriaCombo.getItemAt(i);
                     if (cat.getId().equals(disco.getCategoriaId())) {

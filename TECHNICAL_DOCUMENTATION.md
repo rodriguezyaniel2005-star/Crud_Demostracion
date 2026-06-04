@@ -2,7 +2,7 @@
 
 ## 1. RESUMEN EJECUTIVO
 
-Este proyecto es una refactorización completa de una tienda de discos en una **tienda online generalista** usando MongoDB como base de datos NoSQL. El proyecto demuestra arquitectura profesional de capas, patrones de diseño modernos y capacidades avanzadas de MongoDB.
+Este proyecto es una demostración de una tienda online generalista usando MongoDB como base de datos NoSQL. El proyecto demuestra arquitectura profesional de capas, patrones de diseño modernos y capacidades avanzadas de MongoDB.
 
 **Base de Datos**: `tienda` (MongoDB)  
 **Colecciones**: 4 (categorias, productos, compradores, ventas)  
@@ -11,6 +11,10 @@ Este proyecto es una refactorización completa de una tienda de discos en una **
 **Datos de Prueba**: Seeding automático  
 
 ---
+
+## 0. EXPLICACIÓN DEL PROYECTO
+
+Este proyecto es una demostración de una tienda online genérica basada en MongoDB, que muestra una arquitectura en capas (presentación, controlador, lógica de negocio, acceso a datos y persistencia) con patrones de diseño modernos como Singleton, DAO y Observer. La aplicación incluye una interfaz Swing para gestionar productos, categorías, compradores y ventas, soportando operaciones CRUD completas y actualizaciones en tiempo real mediante un sistema de eventos.
 
 ## 2. ARQUITECTURA DEL PROYECTO
 
@@ -603,7 +607,36 @@ String dbName = "tienda";
 
 ---
 
-## 16. CONCLUSIÓN
+# 16. CONCLUSIÓN
+
+Este proyecto demuestra una refactorización profesional de tienda digital usando MongoDB. Implementa:
+
+- ✓ Arquitectura de capas limpia
+- ✓ 100+ datos de prueba
+- ✓ 20 categorías con atributos dinámicos
+- ✓ CRUD completo funcionando
+- ✓ Actualización UI en tiempo real
+- ✓ Consultas avanzadas con Aggregation Framework
+- ✓ Patrones de diseño modernos
+- ✓ Código mantenible y escalable
+
+MongoDB demuestra ser una excelente opción para tiendas con productos heterogéneos, permitiendo flexibilidad, escalabilidad y análisis complejos sin comprometer performance.
+
+---
+
+## 17. POSIBLES CASOS DE USO
+
+1. **Gestión de inventario para una cadena de tiendas de electrónica** – La empresa puede definir categorías como "Smartphones", "Televisores" y "Accesorios" con atributos específicos (RAM, resolución, puertos). La flexibilidad del esquema permite añadir rápidamente nuevos atributos cuando se lanzan productos innovadores sin migraciones de base de datos.
+
+2. **Plataforma de venta de libros y material educativo** – Cada categoría ("Libros", "Cursos en línea", "Material didáctico") requiere campos diferentes (ISBN, autor, nivel educativo). Con MongoDB, la compañía puede almacenar cada tipo de producto con sus metadatos únicos, facilitando búsquedas por atributos y generación de catálogos personalizados.
+
+3. **Sistema interno de gestión de pedidos para una empresa de fabricación** – Los productos pueden ser componentes con especificaciones técnicas (material, potencia, tolerancia). El modelo flexible permite a los ingenieros registrar componentes nuevos y sus características sin alterar la base de datos existente, y usar el Aggregation Framework para generar informes de consumo y planificación de producción.
+
+---
+
+**Fecha de Documentación**: Junio 2026  
+**Versión**: 1.0  
+**Autor**: 
 
 Este proyecto demuestra una refactorización profesional de tienda digital using MongoDB. Implementa:
 
